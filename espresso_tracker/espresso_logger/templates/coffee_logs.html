@@ -45,7 +45,7 @@
             {% for log, predicted_sourness_bitterness, predicted_strength, recommendation in logs_with_predictions_and_recommendations %}
             <tr>
                 <td>{{ log.bean_name }}</td>
-                <td>{{ log.get_roast_level_display }}</td>
+                <td>{{ log.roast_level }}</td>
                 <td>{{ log.dose }}</td>
                 <td>{{ log.yield_amt }}</td>
                 <td>{{ log.extraction_time }}</td>
@@ -55,8 +55,13 @@
                 <td><b>{{ predicted_strength }}</b></td>
                 <td><b>{{ recommendation }}</b></td>
                 <td>
-                    <a href="{% url 'delete_coffee_log' log.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    <!-- Pass the index of the log in the session list to the delete URL -->
+                    <a href="{% url 'delete_coffee_log' forloop.counter0 %}" class="btn btn-danger btn-sm">Delete</a>
                 </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="11">No coffee logs found.</td>
             </tr>
             {% endfor %}
         </tbody>
