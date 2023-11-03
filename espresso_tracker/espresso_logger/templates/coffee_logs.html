@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Coffee-themed colors */
+    body {
+        background-color: #f5f0e1;  /* creamy color */
+    }
+    .table {
+        color: #4b3621;  /* dark coffee brown */
+    }
+    .table-hover tbody tr:hover {
+        background-color: #e4d4b7;  /* light coffee brown */
+    }
+    .btn-coffee {
+        background-color: #4b3621;  /* dark coffee brown */
+        color: #f5f0e1;  /* creamy color */
+    }
+    .btn-coffee:hover {
+        background-color: #5f4536;  /* slightly lighter coffee brown */
+        color: #f5f0e1;  /* creamy color */
+    }
+</style>
+
+<div class="container mt-5">
+    <h2>Sebastian's Espresso Log</h2>
+
+    <table class="table table-hover mt-4">
+        <thead>
+            <tr>
+                <th>Bean Name</th>
+                <th>Roast Level</th>
+                <th>Dose (g)</th>
+                <th>Yield (g)</th>
+                <th>Extraction Time (s)</th>
+                <th>Grind Size</th>
+                <th>Water Temp (°C)</th>
+                <th>Predicted Bitterness</th>
+                <th>Predicted Strength</th>
+                <th>Recommendation</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log, predicted_sourness_bitterness, predicted_strength, recommendation in logs_with_predictions_and_recommendations %}
+            <tr>
+                <td>{{ log.bean_name }}</td>
+                <td>{{ log.get_roast_level_display }}</td>
+                <td>{{ log.dose }}</td>
+                <td>{{ log.yield_amt }}</td>
+                <td>{{ log.extraction_time }}</td>
+                <td>{{ log.grind_size }}</td>
+                <td>{{ log.water_temperature }}</td>
+                <td><b>{{ predicted_sourness_bitterness }}</b></td>
+                <td><b>{{ predicted_strength }}</b></td>
+                <td><b>{{ recommendation }}</b></td>
+                <td>
+                    <a href="{% url 'delete_coffee_log' log.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'add_coffee_log' %}" class="btn btn-coffee mt-4 mb-4">Add New Log</a>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Coffee-themed colors */
+    body {
+        background-color: #f5f0e1;  /* creamy color */
+    }
+    .btn-coffee {
+        background-color: #4b3621;  /* dark coffee brown */
+        color: #f5f0e1;  /* creamy color */
+    }
+    .btn-coffee:hover {
+        background-color: #5f4536;  /* slightly lighter coffee brown */
+        color: #f5f0e1;  /* creamy color */
+    }
+</style>
+
+<div class="container mt-5">
+    <h2>Add New Coffee Log</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="beanName">Bean Name</label>
+            <input type="text" class="form-control" id="beanName" name="bean_name" placeholder="Enter bean name">
+        </div>
+
+        <div class="form-group">
+            <label for="roastLevel">Roast Level</label>
+            <select class="form-control" id="roastLevel" name="roast_level">
+                <option value="LIGHT" style="background-color: #5c3735; color: #f5f0e1;">Light</option>
+                <option value="LIGHT_MEDIUM" style="background-color: #52312f; color: #f5f0e1;">Light-Medium</option>
+                <option value="MEDIUM" style="background-color: #482b29; color: #f5f0e1;">Medium</option>
+                <option value="MEDIUM_DARK" style="background-color: #3d2523; color: #f5f0e1;">Medium-Dark</option>
+                <option value="DARK" style="background-color: #331e1d; color: #f5f0e1;">Dark</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dose">Dose (g)</label>
+            <input type="number" class="form-control" id="dose" name="dose" placeholder="Enter dose in grams">
+        </div>
+
+        <div class="form-group">
+            <label for="yield">Yield (g)</label>
+            <input type="number" class="form-control" id="yield" name="yield_amt" placeholder="Enter yield in grams">
+        </div>
+
+        <div class="form-group">
+            <label for="extractionTime">Extraction Time (s)</label>
+            <input type="number" class="form-control" id="extractionTime" name="extraction_time" placeholder="Enter extraction time in seconds">
+        </div>
+
+        <div class="form-group">
+            <label for="grindSize">Grind Size</label>
+            <input type="number" class="form-control" id="grindSize" name="grind_size" placeholder="Enter grind size">
+        </div>
+
+        <div class="form-group">
+            <label for="waterTemp">Water Temperature (°C)</label>
+            <input type="number" class="form-control" id="waterTemp" name="water_temperature" placeholder="Enter water temperature in °C">
+        </div>
+
+        <div class="form-group">
+            <label for="toolsUsed">Tools Used</label>
+            <input type="text" class="form-control" id="toolsUsed" name="tools_used" placeholder="Specify tools used, e.g., Espresso machine, grinder model">
+        </div>
+
+        <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Additional notes about the brew..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-coffee mt-4 mb-4">Submit</button>
+    </form>
+</div>
+{% endblock %}
+
