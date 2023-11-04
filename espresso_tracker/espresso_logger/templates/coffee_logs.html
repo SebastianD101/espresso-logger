@@ -20,10 +20,41 @@
         background-color: #5f4536;  /* slightly lighter coffee brown */
         color: #f5f0e1;  /* creamy color */
     }
+    @media (max-width: 768px) {
+        /* Styles for mobile screens */
+        .table-responsive {
+            border: 0;
+        }
+        .table thead {
+            display: none; /* Hide the header on small screens */
+        }
+        .table, .table tbody, .table tr, .table td {
+            display: block;
+            width: 100%;
+        }
+        .table tr {
+            margin-bottom: 15px;
+        }
+        .table td {
+            text-align: right;
+            position: relative;
+            padding-left: 50%;
+        }
+        .table td::before {
+            /* Add a "label" to each cell with the header content */
+            content: attr(data-label);
+            position: absolute;
+            left: 0;
+            width: 50%;
+            padding-left: 15px;
+            font-weight: bold;
+            text-align: left;
+        }
+    }
 </style>
 
-<div class="container mt-5">
-    <h2>Sebastian's Espresso Log</h2>
+<div class="table-responsive">
+    <h2>Machine-Learning-Based Espresso Log</h2>
 
     <table class="table table-hover mt-4">
         <thead>
@@ -33,9 +64,8 @@
                 <th>Dose (g)</th>
                 <th>Yield (g)</th>
                 <th>Extraction Time (s)</th>
-                <th>Grind Size</th>
                 <th>Water Temp (°C)</th>
-                <th>Predicted Bitterness</th>
+                <th>Predicted Acidity</th>
                 <th>Predicted Strength</th>
                 <th>Recommendation</th>
                 <th>Action</th>
@@ -44,16 +74,15 @@
         <tbody>
             {% for log, predicted_sourness_bitterness, predicted_strength, recommendation in logs_with_predictions_and_recommendations %}
             <tr>
-                <td>{{ log.bean_name }}</td>
-                <td>{{ log.roast_level }}</td>
-                <td>{{ log.dose }}</td>
-                <td>{{ log.yield_amt }}</td>
-                <td>{{ log.extraction_time }}</td>
-                <td>{{ log.grind_size }}</td>
-                <td>{{ log.water_temperature }}</td>
-                <td><b>{{ predicted_sourness_bitterness }}</b></td>
-                <td><b>{{ predicted_strength }}</b></td>
-                <td><b>{{ recommendation }}</b></td>
+                <td data-label="Bean Name">{{ log.bean_name }}</td>
+                <td data-label="Roast Level">{{ log.roast_level }}</td>
+                <td data-label="Dose (g)">{{ log.dose }}</td>
+                <td data-label="Yield (g)">{{ log.yield_amt }}</td>
+                <td data-label="Extraction Time (s)">{{ log.extraction_time }}</td>
+                <td data-label="Water Temperature (°C)">{{ log.water_temperature }}</td>
+                <td data-label="Predicted Acidity"><b>{{ predicted_sourness_bitterness }}</b></td>
+                <td data-label="Predicted Strength"><b>{{ predicted_strength }}</b></td>
+                <td data-label="Recommendation"><b>{{ recommendation }}</b></td>
                 <td>
                     <!-- Pass the index of the log in the session list to the delete URL -->
                     <a href="{% url 'delete_coffee_log' forloop.counter0 %}" class="btn btn-danger btn-sm">Delete</a>

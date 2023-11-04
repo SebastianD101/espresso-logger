@@ -19,5 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('logs/', include('espresso_logger.urls')),
+    path('', include('espresso_logger.urls')),
 ]

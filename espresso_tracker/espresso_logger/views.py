@@ -52,13 +52,7 @@ def add_coffee_log(request):
             'dose': request.POST.get('dose'),
             'yield_amt': request.POST.get('yield_amt'),
             'extraction_time': request.POST.get('extraction_time'),
-            'grind_size': request.POST.get('grind_size'),
             'water_temperature': request.POST.get('water_temperature'),
-            # Assuming sourness_bitterness and strength are not user inputs
-            # 'sourness_bitterness': request.POST.get('sourness_bitterness'),
-            # 'strength': request.POST.get('strength'),
-            'tools_used': request.POST.get('tools_used'),
-            'notes': request.POST.get('notes')
         }
 
         # Append predictions to the log
@@ -101,7 +95,6 @@ def get_recommendation(log):
             float(log.get('dose', 0)),
             float(log.get('yield_amt', 0)),
             float(log.get('extraction_time', 0)),
-            float(log.get('grind_size', 0)),
             float(log.get('water_temperature', 0))
         ]
     ]
@@ -114,16 +107,20 @@ def get_recommendation(log):
     predicted_strength = map_strength(predicted_strength_value)
 
     # Generate recommendations based on mapped terms
-    if predicted_sourness_bitterness in ["Very Bitter", "Bitter"]:
-        recommendation = random.choice(["Grind Coarser", "Lower water temp", "Increase dose"])
-    elif predicted_sourness_bitterness in ["Very Sour", "Sour"]:
-        recommendation = random.choice(["Grind Finer", "Raise water temp", "Decrease dose"])
+    if predicted_strength in ["Very Weak", "Weak"]:
+        recommendation = random.choice(["Increase dose", "Grind Finer"])
+    elif predicted_strength in ["Very Strong", "Strong"]:
+        recommendation = random.choice(["Decrease dose", "Grind Coarser"])
 
     if not recommendation:
-        if predicted_strength in ["Very Weak", "Weak"]:
-            recommendation = random.choice(["Increase dose", "Grind Finer"])
-        elif predicted_strength in ["Very Strong", "Strong"]:
-            recommendation = random.choice(["Decrease dose", "Grind Coarser"])
+        if predicted_sourness_bitterness in ["Very Bitter"]:
+            recommendation = random.choice(["Grind Coarser", "Increase dose"])
+        elif predicted_sourness_bitterness in ["Bitter"]:
+            recommendation = random.choice(["Grind Coarser", "Lower water temp"])
+        elif predicted_sourness_bitterness in ["Sour"]:
+            recommendation = random.choice(["Grind Finer", "Raise water temp"])
+        elif predicted_sourness_bitterness in ["Very Sour"]:
+            recommendation = random.choice(["Grind Finer", "Decrease dose"])
 
     return predicted_sourness_bitterness, predicted_strength, recommendation
 
